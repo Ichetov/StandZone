@@ -1,0 +1,11 @@
+.wrap{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+   background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 32%),
+    linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%);
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+  padding: 20px;
+  border-radius: 28px;
+}

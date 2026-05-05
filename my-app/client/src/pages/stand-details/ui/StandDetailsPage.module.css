@@ -1,0 +1,193 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.hero {
+  padding: 28px;
+  border-radius: 26px;
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.14), transparent 34%),
+    linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%);
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.07);
+}
+
+.label {
+  display: inline-flex;
+  margin-bottom: 10px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: #eaf1ff;
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.title {
+  margin: 0;
+  color: #111827;
+  font-size: 38px;
+  line-height: 1.1;
+  font-weight: 850;
+  letter-spacing: -0.04em;
+}
+
+.subtitle {
+  max-width: 620px;
+  margin-top: 12px;
+  color: #64748b;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.mainGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.galleryCard,
+.infoCard,
+.mapCard,
+.requestCard {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 24px;
+  box-shadow: 0 14px 38px rgba(15, 23, 42, 0.06);
+}
+
+.galleryCard {
+  overflow: hidden;
+  padding: 14px;
+}
+
+.infoColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.infoCard,
+.mapCard,
+.requestCard {
+  padding: 22px;
+}
+
+.cardTitle {
+  margin: 0 0 16px;
+  color: #111827;
+  font-size: 20px;
+  font-weight: 850;
+}
+
+.infoList {
+  display: grid;
+  gap: 12px;
+}
+
+.infoItem {
+  padding: 14px;
+  border-radius: 16px;
+  background: #f8fafc;
+  border: 1px solid #edf2f7;
+}
+
+.infoItem span {
+  display: block;
+  margin-bottom: 6px;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.infoItem strong {
+  color: #111827;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.infoItem p {
+  margin: 0;
+  color: #111827;
+  line-height: 1.6;
+}
+
+.map {
+  display: block;
+  height: 320px;
+  border: 0;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.requestCard {
+  padding: 28px;
+}
+
+.requestHeader {
+  margin-bottom: 20px;
+}
+
+.requestTitle {
+  margin: 0;
+  color: #111827;
+  font-size: 28px;
+  font-weight: 850;
+  letter-spacing: -0.03em;
+}
+
+.requestText {
+  max-width: 600px;
+  margin-top: 10px;
+  color: #64748b;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.error {
+  padding: 28px;
+  border-radius: 22px;
+  background: #fff7f7;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  font-weight: 800;
+  text-align: center;
+}
+
+@media (max-width: 920px) {
+  .mainGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .title {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 560px) {
+  .hero,
+  .requestCard {
+    padding: 22px;
+    border-radius: 22px;
+  }
+
+  .infoCard,
+  .mapCard {
+    padding: 18px;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+
+  .requestTitle {
+    font-size: 24px;
+  }
+
+  .map {
+    height: 260px;
+  }
+}

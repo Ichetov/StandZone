@@ -1,0 +1,50 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.success {
+  color: #157347;
+}
+
+.error {
+  color: #b00020;
+  font-size: 11px;
+}
+
+.inputError,
+.textareaError
+ {
+    border: 1px solid red;
+}
+
+.textError{
+  color: red;
+}
+
+.progressRoot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  z-index: 9999;
+}
+
+.progressIndicator {
+  width: 100%;
+  height: 100%;
+  background: red;
+
+  animation: indeterminate 1s infinite;
+}
+
+@keyframes indeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}

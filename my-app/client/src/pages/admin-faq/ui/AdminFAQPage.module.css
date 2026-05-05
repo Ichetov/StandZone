@@ -1,0 +1,148 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.subtitle {
+  margin-top: -10px;
+  color: #64748b;
+  font-size: 15px;
+}
+
+.form {
+  display: grid;
+  gap: 14px;
+  padding: 20px;
+  border-radius: 22px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 14px 40px rgba(15, 23, 42, 0.06);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 14px;
+  align-items: center;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #334155;
+  font-weight: 700;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.cancel {
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.list {
+  display: grid;
+  gap: 12px;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 18px;
+  padding: 18px;
+  border-radius: 18px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  transition: transform 0.18s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+}
+
+.question {
+  margin: 0 0 8px;
+  color: #111827;
+  font-size: 18px;
+  font-weight: 850;
+}
+
+.answer {
+  margin: 0;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.meta {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.cardActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.edit,
+.delete {
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.edit {
+  border: none;
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.delete {
+  border: 1px solid #fecaca;
+  background: #fff7f7;
+  color: #dc2626;
+}
+
+.empty {
+  padding: 32px;
+  border-radius: 18px;
+  background: #ffffff;
+  color: #64748b;
+  text-align: center;
+  font-weight: 700;
+}
+
+@media (max-width: 700px) {
+  .row,
+  .card {
+    grid-template-columns: 1fr;
+  }
+
+  .cardActions,
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .edit,
+  .delete,
+  .cancel {
+    width: 100%;
+  }
+}
