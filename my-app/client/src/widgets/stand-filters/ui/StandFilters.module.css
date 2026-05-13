@@ -76,6 +76,7 @@
 
 @media (max-width: 768px) {
   .filters {
-    grid-template-columns: 1fr;
+   flex-direction: column;
+
   }
 }

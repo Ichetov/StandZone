@@ -60,12 +60,13 @@
 }
 
 .badge{
-   background: #eef2ff;
+  background: #eef2ff;
   color: #4338ca;
   padding: 6px 10px;
   border-radius: 999px;
   font-size: 13px;
   font-weight: 600;
+
 }
 @media (max-width: 768px) {
   .card {
@@ -79,5 +80,9 @@
 
   .imageWrap {
     min-height: 220px;
+  }
+  .badge{
+    padding: 22px;
+    text-align: center;
   }
 }
