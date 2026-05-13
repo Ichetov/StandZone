@@ -1,4 +1,4 @@
-import express from 'express'
+п»їimport express from 'express'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import crypto from 'crypto'
@@ -40,19 +40,19 @@ router.post('/login', async (req, res) => {
     const { login, password } = req.body
 
     if (!login || !password) {
-      return res.status(400).json({ message: 'Логин и пароль обязательны' })
+      return res.status(400).json({ message: 'Р›РѕРіРёРЅ Рё РїР°СЂРѕР»СЊ РѕР±СЏР·Р°С‚РµР»СЊРЅС‹' })
     }
 
     const { data: admin, error } = await supabase.from('admins').select('*').eq('login', login).single()
 
     if (error || !admin) {
-      return res.status(401).json({ message: 'Неверный логин или пароль' })
+      return res.status(401).json({ message: 'РќРµРІРµСЂРЅС‹Р№ Р»РѕРіРёРЅ РёР»Рё РїР°СЂРѕР»СЊ' })
     }
 
     const isValidPassword = await bcrypt.compare(password, admin.password_hash)
 
     if (!isValidPassword) {
-      return res.status(401).json({ message: 'Неверный логин или пароль' })
+      return res.status(401).json({ message: 'РќРµРІРµСЂРЅС‹Р№ Р»РѕРіРёРЅ РёР»Рё РїР°СЂРѕР»СЊ' })
     }
 
     const token = createToken(admin)
@@ -79,7 +79,7 @@ router.get('/me', authMiddleware, async (req, res) => {
       .single()
 
     if (error || !admin) {
-      return res.status(404).json({ message: 'Админ не найден' })
+      return res.status(404).json({ message: 'РђРґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂ РЅРµ РЅР°Р№РґРµРЅ' })
     }
 
     res.json(admin)
@@ -99,11 +99,11 @@ router.put('/me', authMiddleware, async (req, res) => {
       .single()
 
     if (adminError || !admin) {
-      return res.status(404).json({ message: 'Админ не найден' })
+      return res.status(404).json({ message: 'РђРґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂ РЅРµ РЅР°Р№РґРµРЅ' })
     }
 
     if (!login || !email) {
-      return res.status(400).json({ message: 'Логин и email обязательны' })
+      return res.status(400).json({ message: 'Р›РѕРіРёРЅ Рё email РѕР±СЏР·Р°С‚РµР»СЊРЅС‹' })
     }
 
     const { data: loginDup } = await supabase
@@ -114,7 +114,7 @@ router.put('/me', authMiddleware, async (req, res) => {
       .maybeSingle()
 
     if (loginDup) {
-      return res.status(400).json({ message: 'Такой логин уже используется' })
+      return res.status(400).json({ message: 'РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ СЃ С‚Р°РєРёРј Р»РѕРіРёРЅРѕРј СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚' })
     }
 
     const { data: emailDup } = await supabase
@@ -125,24 +125,24 @@ router.put('/me', authMiddleware, async (req, res) => {
       .maybeSingle()
 
     if (emailDup) {
-      return res.status(400).json({ message: 'Такой email уже используется' })
+      return res.status(400).json({ message: 'РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ СЃ С‚Р°РєРёРј email СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚' })
     }
 
     let passwordHash = admin.password_hash
 
     if (newPassword) {
       if (!currentPassword) {
-        return res.status(400).json({ message: 'Введите текущий пароль' })
+        return res.status(400).json({ message: 'РЈРєР°Р¶РёС‚Рµ С‚РµРєСѓС‰РёР№ РїР°СЂРѕР»СЊ' })
       }
 
       const isValidPassword = await bcrypt.compare(currentPassword, admin.password_hash)
 
       if (!isValidPassword) {
-        return res.status(400).json({ message: 'Текущий пароль неверный' })
+        return res.status(400).json({ message: 'РќРµРІРµСЂРЅС‹Р№ С‚РµРєСѓС‰РёР№ РїР°СЂРѕР»СЊ' })
       }
 
       if (newPassword.length < 8) {
-        return res.status(400).json({ message: 'Новый пароль должен быть минимум 8 символов' })
+        return res.status(400).json({ message: 'РќРѕРІС‹Р№ РїР°СЂРѕР»СЊ РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РЅРµ РјРµРЅРµРµ 8 СЃРёРјРІРѕР»РѕРІ' })
       }
 
       passwordHash = await bcrypt.hash(newPassword, 10)
@@ -173,7 +173,7 @@ router.post('/forgot-password', async (req, res) => {
     const { email } = req.body
 
     if (!email) {
-      return res.status(400).json({ message: 'Email обязателен' })
+      return res.status(400).json({ message: 'Email РѕР±СЏР·Р°С‚РµР»РµРЅ' })
     }
 
     const { data: admin } = await supabase.from('admins').select('*').eq('email', email).maybeSingle()
@@ -201,12 +201,12 @@ router.post('/forgot-password', async (req, res) => {
     await transporter.sendMail({
       from: process.env.SMTP_FROM,
       to: admin.email,
-      subject: 'Восстановление пароля',
+      subject: 'РЎР±СЂРѕСЃ РїР°СЂРѕР»СЏ',
       html: `
-        <h2>Восстановление пароля</h2>
-        <p>Перейдите по ссылке, чтобы задать новый пароль:</p>
+        <h2>РЎР±СЂРѕСЃ РїР°СЂРѕР»СЏ</h2>
+        <p>РќР°Р¶РјРёС‚Рµ РЅР° СЃСЃС‹Р»РєСѓ РЅРёР¶Рµ, С‡С‚РѕР±С‹ Р·Р°РґР°С‚СЊ РЅРѕРІС‹Р№ РїР°СЂРѕР»СЊ:</p>
         <a href="${resetLink}">${resetLink}</a>
-        <p>Ссылка действует 15 минут.</p>
+        <p>РЎСЃС‹Р»РєР° РґРµР№СЃС‚РІРёС‚РµР»СЊРЅР° 15 РјРёРЅСѓС‚.</p>
       `,
     })
 
@@ -221,11 +221,11 @@ router.post('/reset-password', async (req, res) => {
     const { token, password } = req.body
 
     if (!token || !password) {
-      return res.status(400).json({ message: 'Токен и пароль обязательны' })
+      return res.status(400).json({ message: 'РўРѕРєРµРЅ Рё РЅРѕРІС‹Р№ РїР°СЂРѕР»СЊ РѕР±СЏР·Р°С‚РµР»СЊРЅС‹' })
     }
 
     if (password.length < 8) {
-      return res.status(400).json({ message: 'Пароль должен быть минимум 8 символов' })
+      return res.status(400).json({ message: 'РќРѕРІС‹Р№ РїР°СЂРѕР»СЊ РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РЅРµ РјРµРЅРµРµ 8 СЃРёРјРІРѕР»РѕРІ' })
     }
 
     const tokenHash = hashToken(token)
@@ -237,13 +237,13 @@ router.post('/reset-password', async (req, res) => {
       .maybeSingle()
 
     if (!admin) {
-      return res.status(400).json({ message: 'Ссылка недействительна' })
+      return res.status(400).json({ message: 'РќРµРґРµР№СЃС‚РІРёС‚РµР»СЊРЅС‹Р№ РёР»Рё СѓСЃС‚Р°СЂРµРІС€РёР№ С‚РѕРєРµРЅ' })
     }
 
     const isExpired = new Date(admin.reset_token_expires_at).getTime() < Date.now()
 
     if (isExpired) {
-      return res.status(400).json({ message: 'Ссылка устарела' })
+      return res.status(400).json({ message: 'РЎСЂРѕРє РґРµР№СЃС‚РІРёСЏ С‚РѕРєРµРЅР° РёСЃС‚РµРє' })
     }
 
     const passwordHash = await bcrypt.hash(password, 10)
