@@ -87,13 +87,13 @@ export const LoginForm = () => {
             />
           </div>
 
-          <button
+          {/* <button
             type="button"
             className={styles.forgot}
             onClick={() => setIsResetModalOpen(true)}
           >
             Забыли пароль?
-          </button>
+          </button> */}
         </div>
 
         {errorText && <div className={styles.error}>{errorText}</div>}
@@ -103,7 +103,7 @@ export const LoginForm = () => {
         </button>
       </form>
 
-      {isResetModalOpen && (
+      {/* {isResetModalOpen && (
         <div className={styles.modalOverlay}>
           <div className={styles.modal}>
             <h2 className={styles.modalTitle}>Восстановление пароля</h2>
@@ -142,7 +142,7 @@ export const LoginForm = () => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </>
   )
 }
