@@ -1,3 +1,7 @@
+import {
+  buildRequestTelegramMessage,
+  sendTelegramMessage,
+} from '../services/telegram.js'
 import express from 'express'
 import { supabase } from '../supabase/client.js'
 import { authMiddleware } from '../middleware/auth.js'
@@ -9,7 +13,7 @@ router.post('/', async (req, res) => {
     const { standId, clientName, phone, email, message } = req.body
 
     if (!clientName || !phone || !email) {
-      return res.status(400).json({ message: 'Заполни обязательные поля' })
+      return res.status(400).json({ message: 'Р—Р°РїРѕР»РЅРёС‚Рµ РѕР±СЏР·Р°С‚РµР»СЊРЅС‹Рµ РїРѕР»СЏ' })
     }
 
     const { data, error } = await supabase
@@ -25,6 +29,38 @@ router.post('/', async (req, res) => {
       .single()
 
     if (error) throw error
+
+    let stand = null
+
+    if (standId) {
+      const { data: standData, error: standError } = await supabase
+        .from('stands')
+        .select('title, mall_name')
+        .eq('id', standId)
+        .maybeSingle()
+
+      if (standError) {
+        console.error('Failed to load stand for Telegram notification:', standError)
+      }
+
+      stand = standData
+    }
+
+    try {
+      const telegramMessage = buildRequestTelegramMessage({
+        id: data.id,
+        standTitle: stand?.title,
+        mallName: stand?.mall_name,
+        clientName,
+        phone,
+        email,
+        message,
+      })
+
+      await sendTelegramMessage(telegramMessage)
+    } catch (telegramError) {
+      console.error('Telegram notification error:', telegramError)
+    }
 
     res.status(201).json({ success: true, id: data.id })
   } catch (error) {
@@ -97,7 +133,7 @@ router.patch('/:id/viewed', authMiddleware, async (req, res) => {
       .single()
 
     if (currentError || !current) {
-      return res.status(404).json({ message: 'Заявка не найдена' })
+      return res.status(404).json({ message: 'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ' })
     }
 
     const { error } = await supabase.from('requests').update({ is_viewed: true }).eq('id', req.params.id)
@@ -118,7 +154,7 @@ router.delete('/:id', authMiddleware, async (req, res) => {
       .single()
 
     if (currentError || !current) {
-      return res.status(404).json({ message: 'Заявка не найдена' })
+      return res.status(404).json({ message: 'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ' })
     }
 
     const { error } = await supabase.from('requests').delete().eq('id', req.params.id)
