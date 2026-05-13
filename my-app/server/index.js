@@ -57,8 +57,10 @@ app.use('/api/uploads', uploadsRoutes)
 app.use('/api/faqs', faqsRoutes)
 
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok' });
-});
+ res.json({ status: 'ok' });
+}); 
+
+const PORT = process.env.PORT || 4000
 
 app.listen(PORT, () => {
   console.log(`Server started on http://localhost:${PORT}`)
