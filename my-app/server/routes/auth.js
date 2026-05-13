@@ -25,10 +25,7 @@ const hashToken = (token) => {
   return crypto.createHash('sha256').update(token).digest('hex')
 }
 
-await sendResetPasswordEmail({
-  to: admin.email,
-  resetUrl,
-})
+
 
 router.post('/login', async (req, res) => {
   try {
@@ -189,7 +186,6 @@ router.post('/forgot-password', async (req, res) => {
       })
     }
 
-    // Безопасно: не раскрываем, существует ли такой email в базе.
     if (!admin) {
       return res.json({
         message: 'Если email существует, инструкция отправлена на почту',
@@ -231,7 +227,9 @@ router.post('/forgot-password', async (req, res) => {
       })
     }
 
-    const resetUrl = `${clientUrl}/admin/reset-password?token=${resetToken}`
+    const resetUrl = `${clientUrl}/reset-password?token=${resetToken}`
+
+    console.log('Reset link:', resetUrl)
 
     await sendResetPasswordEmail({
       to: admin.email,
