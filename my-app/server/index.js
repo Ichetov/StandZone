@@ -8,26 +8,46 @@ import uploadsRoutes from './routes/uploads.js'
 import faqsRoutes from './routes/faqs.js'
 
 const app = express()
-const PORT = process.env.PORT || 4000
+
+const normalizeOrigin = (origin) => {
+  return origin?.replace(/\/$/, '')
+}
 
 const allowedOrigins = [
   'http://localhost:5173',
   process.env.CLIENT_URL,
-].filter(Boolean);
+]
+  .filter(Boolean)
+  .map(normalizeOrigin)
 
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-        return;
+      // Разрешаем запросы без origin: Postman, curl, health-check Render
+      if (!origin) {
+        callback(null, true)
+        return
       }
 
-      callback(new Error('Not allowed by CORS'));
+      const normalizedOrigin = normalizeOrigin(origin)
+
+      if (allowedOrigins.includes(normalizedOrigin)) {
+        callback(null, true)
+        return
+      }
+
+      console.log('Blocked by CORS:', {
+        origin,
+        normalizedOrigin,
+        allowedOrigins,
+      })
+
+      callback(null, false)
     },
     credentials: true,
   })
-);
+)
+
 app.use(express.json())
 
 app.use('/api/auth', authRoutes)
