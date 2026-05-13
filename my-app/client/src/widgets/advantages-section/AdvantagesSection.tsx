@@ -1,5 +1,6 @@
 import { Link } from 'react-router'
 import styles from './AdvantagesSection.module.css'
+import car from '../../assets/car.png'
 
 export const AdvantagesSection = () => {
   return (
@@ -47,7 +48,7 @@ export const AdvantagesSection = () => {
    <div className={styles.imageWrap}>
   <img
     className={styles.image}
-    src="./src/assets/car.png"
+    src={car}
     alt="Рекламная стойка в торговом центре"
   />
 </div>
