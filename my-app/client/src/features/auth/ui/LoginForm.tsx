@@ -1,26 +1,23 @@
 import { useState } from 'react'
 import {
-  useForgotPasswordMutation,
   useLoginMutation,
 } from '@/entities/auth/api/authApi'
 import { setToken } from '@/shared/lib/auth'
 import styles from './LoginForm.module.css'
 import { useNavigate } from 'react-router'
-import toast from 'react-hot-toast'
+
 
 export const LoginForm = () => {
   const navigate = useNavigate()
 
   const [login, setLogin] = useState('')
   const [password, setPassword] = useState('')
-  const [email, setEmail] = useState('')
   const [errorText, setErrorText] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [isResetModalOpen, setIsResetModalOpen] = useState(false)
+
 
   const [loginRequest, { isLoading }] = useLoginMutation()
-  const [forgotPassword, { isLoading: isSendingReset }] =
-    useForgotPasswordMutation()
+
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
@@ -35,21 +32,6 @@ export const LoginForm = () => {
     }
   }
 
-  const handleResetPassword = async () => {
-    if (!email.trim()) {
-      toast.error('Введите email')
-      return
-    }
-
-    try {
-      await forgotPassword({ email }).unwrap()
-      toast.success('Если email найден, ссылка для восстановления отправлена')
-      setEmail('')
-      setIsResetModalOpen(false)
-    } catch {
-      toast.error('Не удалось отправить письмо')
-    }
-  }
 
   return (
     <>
