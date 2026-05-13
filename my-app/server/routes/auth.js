@@ -2,9 +2,9 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import crypto from 'crypto'
-import nodemailer from 'nodemailer'
 import { supabase } from '../supabase/client.js'
 import { authMiddleware } from '../middleware/auth.js'
+import { sendResetPasswordEmail } from '../services/email.js'
 
 const router = express.Router()
 
@@ -173,47 +173,85 @@ router.post('/forgot-password', async (req, res) => {
     const { email } = req.body
 
     if (!email) {
-      return res.status(400).json({ message: 'Email обязателен' })
+      return res.status(400).json({
+        message: 'Email обязателен',
+      })
     }
 
-    const { data: admin } = await supabase.from('admins').select('*').eq('email', email).maybeSingle()
+    const normalizedEmail = String(email).trim().toLowerCase()
 
+    const { data: admin, error: findError } = await supabase
+      .from('admins')
+      .select('id, email')
+      .eq('email', normalizedEmail)
+      .maybeSingle()
+
+    if (findError) {
+      console.error('Find admin error:', findError)
+
+      return res.status(500).json({
+        message: 'Ошибка поиска администратора',
+      })
+    }
+
+    // Безопасно: не раскрываем, существует ли такой email в базе.
     if (!admin) {
-      return res.json({ success: true })
+      return res.json({
+        message: 'Если email существует, инструкция отправлена на почту',
+      })
     }
 
-    const resetToken = createResetToken()
-    const resetTokenHash = hashToken(resetToken)
-    const expiresAt = new Date(Date.now() + 1000 * 60 * 15).toISOString()
+    const resetToken = crypto.randomBytes(32).toString('hex')
+
+    const resetTokenHash = crypto
+      .createHash('sha256')
+      .update(resetToken)
+      .digest('hex')
+
+    const resetTokenExpiresAt = new Date(
+      Date.now() + 60 * 60 * 1000
+    ).toISOString()
 
     const { error: updateError } = await supabase
       .from('admins')
       .update({
         reset_token_hash: resetTokenHash,
-        reset_token_expires_at: expiresAt,
+        reset_token_expires_at: resetTokenExpiresAt,
       })
       .eq('id', admin.id)
 
-    if (updateError) throw updateError
+    if (updateError) {
+      console.error('Save reset token error:', updateError)
 
-    const resetLink = `${process.env.CLIENT_URL}/reset-password?token=${resetToken}`
-    console.log('Reset link:', resetLink)
+      return res.status(500).json({
+        message: 'Ошибка сохранения токена восстановления',
+      })
+    }
 
-    await transporter.sendMail({
-      from: process.env.SMTP_FROM,
+    const clientUrl = process.env.CLIENT_URL?.replace(/\/$/, '')
+
+    if (!clientUrl) {
+      return res.status(500).json({
+        message: 'CLIENT_URL is not configured',
+      })
+    }
+
+    const resetUrl = `${clientUrl}/admin/reset-password?token=${resetToken}`
+
+    await sendResetPasswordEmail({
       to: admin.email,
-      subject: 'Сброс пароля',
-      html: `
-        <h2>Сброс пароля</h2>
-        <p>Нажмите на ссылку ниже, чтобы задать новый пароль:</p>
-        <a href="${resetLink}">${resetLink}</a>
-        <p>Ссылка действительна 15 минут.</p>
-      `,
+      resetUrl,
     })
 
-    res.json({ success: true })
+    return res.json({
+      message: 'Если email существует, инструкция отправлена на почту',
+    })
   } catch (error) {
-    res.status(500).json({ message: error.message || 'Server error' })
+    console.error('Forgot password error:', error)
+
+    return res.status(500).json({
+      message: error.message || 'Ошибка восстановления пароля',
+    })
   }
 })
 
