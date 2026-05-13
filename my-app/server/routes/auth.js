@@ -25,14 +25,9 @@ const hashToken = (token) => {
   return crypto.createHash('sha256').update(token).digest('hex')
 }
 
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT),
-  secure: false,
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
+await sendResetPasswordEmail({
+  to: admin.email,
+  resetUrl,
 })
 
 router.post('/login', async (req, res) => {
