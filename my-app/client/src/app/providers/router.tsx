@@ -13,6 +13,7 @@ import { NotFoundPage } from '@/shared/ui/NotFoundPage'
 import { AdminRequestsPage } from '@/pages/adnin-requests/ui/AdminRequestsPage'
 import { AdminFAQPage } from '@/pages/admin-faq/ui/AdminFAQPage'
 import { AdminProfilePage } from '@/pages/admin-profile/ui/AdminProfilePage'
+import { ResetPasswordPage } from '@/pages/reset-password/ui/ResetPasswordPage'
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
   {
     path: '/admin/login',
     element: <AdminLoginPage />
+  },
+  {
+    path: '/reset-password',
+    element: <ResetPasswordPage />
   },
   
   {

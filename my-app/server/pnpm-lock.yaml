@@ -32,6 +32,9 @@ importers:
       nodemailer:
         specifier: ^8.0.7
         version: 8.0.7
+      ws:
+        specifier: ^8.18.0
+        version: 8.20.0
 
 packages:
 
