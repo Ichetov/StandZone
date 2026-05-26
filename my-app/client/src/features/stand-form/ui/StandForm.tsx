@@ -67,6 +67,10 @@ export const StandForm = ({ initialValues, onSubmit, onUpload, submitText }: Pro
 
     try {
       const urls = await onUpload(files)
+
+    console.log('Выбрано файлов:', files.length)
+    console.log('Загружено ссылок:', urls)
+
       handleChange('images', [...values.images, ...urls])
     } catch {
       setErrorText('Не удалось загрузить изображения')
@@ -108,6 +112,8 @@ export const StandForm = ({ initialValues, onSubmit, onUpload, submitText }: Pro
     }
   }
 
+
+  console.log(values.images)
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <div className="grid2">
@@ -197,29 +203,46 @@ export const StandForm = ({ initialValues, onSubmit, onUpload, submitText }: Pro
         Активна
       </label>
 
+
       <div className="formRow">
         <label>Загрузка фото</label>
+        <div>
+        </div>
         <input type="file" multiple accept="image/*" onChange={handleFileChange} />
         {isUploading && <div>Загрузка файлов...</div>}
       </div>
 
-      <div className={styles.images}>
-        {values.images.map((image, index) => (
-          <div className={styles.imageItem} key={`${image}-${index}`}>
-            <img src={image} alt={`uploaded-${index}`} />
-            <button
-              className="buttonSecondary"
-              type="button"
-              onClick={() => handleRemoveImage(index)}
-            >
-              Удалить
-            </button>
-          </div>
-        ))}
-      </div>
+    <div className={styles.images}>
+  {values.images.map((image, index) => (
+    <div className={styles.imageItem} key={`${image}-${index}`}>
+      <img
+        className={styles.imagePreview}
+         src={image}
+        alt={`Фото рекламной точки ${index + 1}`}
+      />
+
+      <button
+        className={styles.removeImageButton}
+        type="button"
+        onClick={() => handleRemoveImage(index)}
+        aria-label={`Удалить фото ${index + 1}`}
+        title="Удалить фото"
+      >
+        ×
+      </button>
+    </div>
+  ))}
+</div>
 
       {errorText && <div className={styles.error}>{errorText}</div>}
-
+  <a
+  className={styles.compressLink}
+  href="https://tinypng.com/"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  Сжать фото на TinyPNG
+</a>
       <button className="button" type="submit" disabled={isSubmitting}>
         {isSubmitting ? 'Сохранение...' : submitText}
       </button>

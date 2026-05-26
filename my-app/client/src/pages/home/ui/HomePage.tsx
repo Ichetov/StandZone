@@ -4,10 +4,10 @@ import { Footer } from '@/widgets/footer/ui/Footer'
 import { StandFilters } from '@/widgets/stand-filters/ui/StandFilters'
 import { StandList } from '@/widgets/stand-list/ui/StandList'
 import { useGetMallsQuery, useGetStandsQuery } from '@/entities/stand/api/standApi'
-import { Loader } from '@/shared/ui/Loader'
 import { AdvantagesSection } from '@/widgets/advantages-section/AdvantagesSection'
 import style from './HomePage.module.css'
 import { FAQSection } from '@/widgets/faq-section/ui/FAQSection'
+import { StandListSkeleton } from '@/shared/ui/StandListSkeleton'
 
 
 const capitalizeFirst = (value: string) => {
@@ -31,7 +31,7 @@ export const HomePage = () => {
 
 
   const { data: malls = [] } = useGetMallsQuery()
-  const {data:{meta, data: stands = []}={} , isLoading } = useGetStandsQuery(standsQuery)
+  const {data:{meta, data: stands = []}={} , isLoading, isFetching } = useGetStandsQuery(standsQuery)
 
   return (
     <div className="page">
@@ -54,13 +54,18 @@ export const HomePage = () => {
               }}
               onSearchChange={setSearch}
             />
-           {isLoading ? (
-  <Loader />
+          <section aria-busy={isLoading}>
+  {isLoading || isFetching ? (
+  <StandListSkeleton count={3} />
 ) : (
-  <>
-    <StandList totalPages={meta?.totalPages || 0} stands={stands} page = {page} setPage = {setPage} />
-  </>
+  <StandList
+    totalPages={meta?.totalPages || 0}
+    stands={stands}
+    page={page}
+    setPage={setPage}
+  />
 )}
+</section>
             </div>
           </div>
         </div>

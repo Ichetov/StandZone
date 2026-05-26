@@ -55,6 +55,8 @@ export const AdminStandEditPage = () => {
     return <div>Точка не найдена</div>
   }
 
+  console.log(stand)
+
   return (
     <div className="stack24">
       <h1 className="sectionTitle">Редактировать точку</h1>

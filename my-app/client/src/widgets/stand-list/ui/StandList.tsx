@@ -15,6 +15,7 @@ export const StandList = ({ stands, page, setPage, totalPages }: Props) => {
     return <div>Точки не найдены.</div>
   }
  
+  console.log(stands)
 
   return (
     <div className={styles.list}>

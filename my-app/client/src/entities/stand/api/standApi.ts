@@ -77,5 +77,6 @@ export const {
   useCreateStandMutation,
   useUpdateStandMutation,
   useDeleteStandMutation,
-  useUploadImagesMutation
+  useUploadImagesMutation,
+  useLazyGetStandBySlugQuery
 } = standApi
