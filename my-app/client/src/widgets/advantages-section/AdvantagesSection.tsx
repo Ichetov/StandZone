@@ -7,7 +7,7 @@ export const AdvantagesSection = () => {
     <section className={styles.advantages}>
       <div className={styles.content}>
         <div className={styles.text}>
-          <span className={styles.label}>Преимущества рекламы</span>
+          <span className={styles.label}>Реклама в торговых центрах</span>
 
           <h2 className={styles.title}>
             Рекламные стойки в ТЦ помогают быть ближе к покупателю

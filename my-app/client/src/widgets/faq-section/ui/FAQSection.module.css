@@ -1,9 +1,9 @@
 .section {
- margin-bottom: 40px;
+
 }
 
 .content{
-  padding: 40px;
+  padding: 20px;
   border-radius: 28px;
   background:
     radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 32%),

@@ -41,7 +41,7 @@ export const StandCard = ({ stand }: Props) => {
 
   return (
     <article ref={cardRef} className={styles.card}>
-      <div className={styles.imageWrap}>
+      {/* <div className={styles.imageWrap}>
         <img
           className={styles.image}
           src={stand.images[0]}
@@ -49,7 +49,13 @@ export const StandCard = ({ stand }: Props) => {
           loading="lazy"
           decoding="async"
         />
-      </div>
+      </div> */}
+      <div className={styles.imageWrap}>
+  <img className={styles.image} src={stand.images[0]} alt={stand.title}  loading="lazy"
+          decoding="async"/>
+
+  <span className={styles.cityBadge}>{stand.city}</span>
+</div>
 
       <div className={styles.content}>
         <h3 className={styles.title}>{stand.title}</h3>

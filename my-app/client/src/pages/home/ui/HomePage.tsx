@@ -8,6 +8,7 @@ import { AdvantagesSection } from '@/widgets/advantages-section/AdvantagesSectio
 import style from './HomePage.module.css'
 import { FAQSection } from '@/widgets/faq-section/ui/FAQSection'
 import { StandListSkeleton } from '@/shared/ui/StandListSkeleton'
+import { TrustBlock } from '@/widgets/trust-block/ui/TrustBlock'
 
 
 const capitalizeFirst = (value: string) => {
@@ -39,7 +40,7 @@ export const HomePage = () => {
      <main className="pageMain">
         <div className="container">
           <AdvantagesSection/>
-           <FAQSection />
+          <TrustBlock />
               <div className={style.wrap}>
                           <div className="stack24">
             <h1 className="sectionTitle">Рекламные точки</h1>
@@ -67,7 +68,9 @@ export const HomePage = () => {
 )}
 </section>
             </div>
+       <FAQSection />
           </div>
+          
         </div>
 
       </main>

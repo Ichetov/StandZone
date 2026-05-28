@@ -4,20 +4,6 @@ import { authMiddleware } from '../middleware/auth.js'
 
 const router = express.Router()
 
-// const mapStand = (stand, images = []) => ({
-//   id: stand.id,
-//   slug: stand.slug,
-//   title: stand.title,
-//   mallName: stand.mall_name,
-//   address: stand.address,
-//   city: stand.city,
-//   description: stand.description,
-//   lat: stand.lat,
-//   lng: stand.lng,
-//   isActive: Boolean(stand.is_active),
-//   images: images.map((img) => img.image_url),
-// })
-
 
 const API_URL = process.env.API_URL?.replace(/\/$/, '')
 
