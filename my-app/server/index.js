@@ -6,6 +6,7 @@ import standsRoutes from './routes/stands.js'
 import requestsRoutes from './routes/requests.js'
 import uploadsRoutes from './routes/uploads.js'
 import faqsRoutes from './routes/faqs.js'
+import imagesRouter from './routes/images.js'
 
 const app = express()
 
@@ -55,6 +56,7 @@ app.use('/api/stands', standsRoutes)
 app.use('/api/requests', requestsRoutes)
 app.use('/api/uploads', uploadsRoutes)
 app.use('/api/faqs', faqsRoutes)
+app.use('/api/images', imagesRouter)
 
 app.get('/api/health', (req, res) => {
  res.json({ status: 'ok' });

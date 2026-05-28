@@ -4,19 +4,50 @@ import { authMiddleware } from '../middleware/auth.js'
 
 const router = express.Router()
 
-const mapStand = (stand, images = []) => ({
-  id: stand.id,
-  slug: stand.slug,
-  title: stand.title,
-  mallName: stand.mall_name,
-  address: stand.address,
-  city: stand.city,
-  description: stand.description,
-  lat: stand.lat,
-  lng: stand.lng,
-  isActive: Boolean(stand.is_active),
-  images: images.map((img) => img.image_url),
-})
+// const mapStand = (stand, images = []) => ({
+//   id: stand.id,
+//   slug: stand.slug,
+//   title: stand.title,
+//   mallName: stand.mall_name,
+//   address: stand.address,
+//   city: stand.city,
+//   description: stand.description,
+//   lat: stand.lat,
+//   lng: stand.lng,
+//   isActive: Boolean(stand.is_active),
+//   images: images.map((img) => img.image_url),
+// })
+
+
+const API_URL = process.env.API_URL?.replace(/\/$/, '')
+
+const toPublicImageUrl = (imageUrl) => {
+  if (!API_URL) return imageUrl
+
+  return `${API_URL}/images/proxy?url=${encodeURIComponent(imageUrl)}`
+}
+
+const mapStand = (stand, images = [], options = {}) => {
+  const { proxyImages = false } = options
+
+  return {
+    id: stand.id,
+    slug: stand.slug,
+    title: stand.title,
+    mallName: stand.mall_name,
+    address: stand.address,
+    city: stand.city,
+    description: stand.description,
+    lat: stand.lat,
+    lng: stand.lng,
+    isActive: Boolean(stand.is_active),
+    images: images.map((img) =>
+      proxyImages ? toPublicImageUrl(img.image_url) : img.image_url
+    ),
+  }
+}
+
+
 
 const loadImagesByStandIds = async (standIds) => {
   if (standIds.length === 0) return new Map()
@@ -82,7 +113,10 @@ router.get('/', async (req, res) => {
 
     const total = count || 0
     const imageMap = await loadImagesByStandIds((stands || []).map((stand) => stand.id))
-    const data = (stands || []).map((stand) => mapStand(stand, imageMap.get(stand.id) || []))
+    // const data = (stands || []).map((stand) => mapStand(stand, imageMap.get(stand.id) || []))
+    const data = (stands || []).map((stand) =>
+  mapStand(stand, imageMap.get(stand.id) || [], { proxyImages: true })
+)
 
     res.json({
       data,
@@ -159,7 +193,8 @@ router.get('/:slug', async (req, res) => {
 
     if (imagesError) throw imagesError
 
-    res.json(mapStand(stand, images || []))
+    // res.json(mapStand(stand, images || []))
+    res.json(mapStand(stand, images || [], { proxyImages: true }))
   } catch (error) {
     res.status(500).json({ message: error.message || 'Server error' })
   }
